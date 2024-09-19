@@ -11,7 +11,9 @@ var base_directories = []string{"/cmd", "/internal", "/pkg", "/config", "/script
 
 func check(e error) {
 	if e != nil {
-		panic(e)
+		fmt.Println("Error")
+		fmt.Println(e)
+		os.Exit(1)
 	}
 }
 
@@ -21,10 +23,12 @@ func write_cmd_file(project_name string, file_name string, bytes []byte) {
 }
 
 func main() {
+	if len(os.Args) < 2 {
+		fmt.Println("Error: pass in project name like this: go-make project_name")
+		os.Exit(1)
+	}
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Println("Project name?")
-	project_name, err := reader.ReadString('\n')
-	check(err)
+	project_name := os.Args[1]
 	fmt.Println("Is this an api application? (y,n)")
 	is_api, err := reader.ReadString('\n')
 	check(err)
