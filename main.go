@@ -15,6 +15,11 @@ func check(e error) {
 	}
 }
 
+func write_cmd_file(project_name string, file_name string, bytes []byte) {
+	err := os.WriteFile(project_name+"/cmd/"+project_name+"/"+file_name, bytes, 0644)
+	check(err)
+}
+
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Println("Project name?")
@@ -38,8 +43,6 @@ func main() {
 	}
 
 	os.Mkdir(project_name+"/cmd/"+project_name+"/", 0755)
-	err = os.WriteFile(project_name+"/cmd/"+project_name+"/"+"main.go", []byte("package main\n\nfunc main(){\n\n}"), 0644)
-	check(err)
-	err = os.WriteFile(project_name+"/cmd/"+project_name+"/"+"go.mod", []byte("module "+project_name+"\n\n"+"go 1.20"), 0644)
-	check(err)
+	write_cmd_file(project_name, "main.go", []byte("package main\n\nfunc main(){\n\n}"))
+	write_cmd_file(project_name, "go.mod", []byte("module "+project_name+"\n\n"+"go 1.20"))
 }
